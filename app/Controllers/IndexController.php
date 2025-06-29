@@ -2,10 +2,10 @@
 
 namespace app\Controllers;
 
-class NotFoundController
+class IndexController
 {
     public function index(): void
     {
-        require_once 'resources/views/404.php';
+        require_once 'resources/views/index.php';
     }
 }

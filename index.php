@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 use app\Core\Router;
 
 $microTime = microtime(true);

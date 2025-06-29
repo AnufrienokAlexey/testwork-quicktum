@@ -6,22 +6,16 @@ class Router
 {
     public static function processRequest(): void
     {
-        Request::getConfigRoute();
-        $uri = Request::$configRoute;
-        dump($uri);
+        $uri = Request::getUri();
         $method = Request::getMethod();
-        dump($method);
-        dump(ROUTES);
 
         if (array_key_exists($uri, ROUTES)) {
-            $matchMethod = false;
             foreach (ROUTES[$uri] as $route) {
                 if ($route[0] == $method) {
-                    $matchMethod = true;
                     $controller = $route[1][0];
                     $action = $route[1][1];
-                    $controllerFullName = "app\\Controllers\\" . $controller;
-                    $controllerPath = APP . '/Controllers/' . $controller . '.php';
+                    $controllerFullName = 'app\\Controllers\\' . $controller;
+                    $controllerPath = APP . DS . 'Controllers' . DS . $controller . '.php';
                     if (file_exists($controllerPath)) {
                         $c = new $controllerFullName();
                         if (method_exists($c, $action)) {
@@ -32,19 +26,17 @@ class Router
                     } else {
                         dump('Controller class not found!');
                     }
+                } else {
+                    self::ErrorPage();
                 }
             }
-            if (!$matchMethod) {
-                self::ErrorPage(405);
-            }
         } else {
-            self::ErrorPage(404);
+            self::ErrorPage();
         }
     }
 
-    public static function ErrorPage(int $status): void
+    public static function ErrorPage(): void
     {
-        http_response_code($status);
-        header("HTTP/1.1 $status");
+        header('Location: /404');
     }
 }
