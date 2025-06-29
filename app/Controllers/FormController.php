@@ -41,9 +41,12 @@ class FormController
             if ($value === '}') {
                 $a--;
             };
-            if (($a < 0) || ($a > 0)) {
+            if (($a < 0)) {
                 return false;
             }
+        }
+        if ($a > 0) {
+            return false;
         }
         return true;
     }
